@@ -7,7 +7,6 @@ import { ParticipantApiService } from '../../../core/services/participant-api.se
 import { MovieApiService } from '../../../core/services/movie-api.service';
 import { SpinnerComponent } from '../../../shared/components/spinner/spinner.component';
 import { MovieCreate } from '../../../core/models/api.models';
-import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-movie-form',
@@ -23,12 +22,10 @@ export class MovieFormComponent {
   private readonly participantApiService = inject(ParticipantApiService);
   private readonly movieApiService = inject(MovieApiService);
 
-  // TODO 7: Utiliser `toSignal` pour récupérer la liste des genres.
-  // Gérer l'erreur avec `catchError` et pipe pour retourner un tableau vide en cas de problème.
-  // readonly genres = toSignal(/* ...votre code ici... */, { initialValue: [] });
+  readonly genres = toSignal(this.genreApiService.getGenres(), { initialValue: [] });
 
-  // TODO 8: Faire de même pour la liste des participants.
-  // readonly participants = toSignal(/* ...votre code ici... */,{ initialValue: [] });
+
+  readonly participants = toSignal(this.participantApiService.getParticipants(),{ initialValue: [] });
 
   readonly isSaving = signal(false);
 
@@ -54,7 +51,7 @@ export class MovieFormComponent {
       return;
     }
 
-    // TODO 9: Mettre le signal `isSaving` à `true` au début de la soumission.
+    this.isSaving.set(true);
 
     const formValue = this.movieForm.getRawValue();
 
@@ -71,14 +68,12 @@ export class MovieFormComponent {
 
     this.movieApiService.createMovie(moviePayload).subscribe({
       next: createdMovie => {
-        // TODO 10: En cas de succès :
-        // 1. Mettre `isSaving` à `false`.
-        // 2. Naviguer (this.router.navigate) vers la page de détail du film qui vient d'être créé.
+        this.isSaving.set(false);
+        this.router.navigate(['/movies', createdMovie.id]);
       },
       error: err => {
-        // TODO 11: En cas d'erreur :
-        // 1. Mettre `isSaving` à `false`.
-        // 2. Afficher l'erreur dans la console.
+        this.isSaving.set(false);
+        console.error('Erreur lors de la création du film:', err);
       }
     });
 

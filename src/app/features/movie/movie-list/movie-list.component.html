@@ -4,24 +4,24 @@
     <a routerLink="/movies/new" class="btn btn-primary">Ajouter un film</a>
   </div>
 
-  <!-- @if (movies().length > 0) { -->
-    <div class="movie-grid">
-      <!-- @for (movie of movies(); track movie.id) { -->
-        <a class="movie-card"> <!-- [routerLink]="['/movies', movie.id]" -->
+   @if (movies().length > 0) {
+    <div class="movie-grid" >
+       @for (movie of movies(); track movie.id) {
+        <a [routerLink]="['/movies', movie.id]" class="movie-card">
           <div class="movie-card-content">
-            <h2 class="movie-title"><!-- TODO : afficher movie title et year --></h2>
+            <h2 class="movie-title">{{ movie.title }} {{ movie.year }}</h2>
             <p class="movie-director">
-              De <!-- TODO : afficher movie.director first_name et last_name -->
+              De {{ movie.director.first_name }}  {{ movie.director.last_name }}
             </p>
             <div class="movie-meta">
-              <span class="movie-genre"><!-- {{ movie.genre.label }} --></span>
-              <span class="movie-duration"><!-- {{ movie.duration }} --></span> <!-- TODO : utiliser le pipe duration -->
+              <span class="movie-genre"> {{ movie.genre.label }} </span>
+              <span class="movie-duration"> {{ movie.duration | duration }} </span>
             </div>
           </div>
         </a>
-<!--      }  -->
+      }
     </div>
-<!--  } @else { -->
+  } @else {
     <app-spinner />
-<!--  } -->
+  }
 </div>

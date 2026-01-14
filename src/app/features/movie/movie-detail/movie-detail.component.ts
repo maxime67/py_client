@@ -77,30 +77,32 @@ export class MovieDetailComponent {
     // === SOUSCRIPTION N°1 : DÉTAILS DU FILM (RAPIDE) ===
     const movieSub = this.movieApiService.getMovieById(movieId).subscribe({
       next: (movieData) => {
-
-        // TODO 3: Mettre à jour le signal `state` en cas de succès de l'appel `getMovieById`.
-        // - La partie `movie` de l'état doit contenir `movieData`.
-        // - `loading` doit passer à `false`.
-        // - `error` doit être `null`.
-        this.state.update(s => ({...s}));
+        this.state.update(s => ({
+          ...s,
+          movie: { data: movieData, loading: false, error: null }
+        }));
       },
       error: (err) => {
-        // TODO 4: Mettre à jour le signal `state` en cas d'erreur.
-        // - `loading` doit passer à `false`.
-        // - `error` doit contenir le message d'erreur (`err.message`).
-        this.state.update(s => ({...s}));
+        this.state.update(s => ({
+          ...s,
+          movie: { data: null, loading: false, error: err.message }
+        }));
       },
     });
 
     // === SOUSCRIPTION N°2 : ANALYSE IA (PLUS LENT) ===
     const analysisSub = this.aiApiService.getMovieAnalysis(movieId).subscribe({
       next: (analysisData) => {
-        // TODO 5: Mettre à jour le signal `state` pour la partie `analysis` en cas de succès.
-        this.state.update(s => ({...s}));
+        this.state.update(s => ({
+          ...s,
+          analysis: { data: analysisData, loading: false, error: null }
+        }));
       },
       error: (err) => {
-        // TODO 6: Mettre à jour le signal `state` pour la partie `analysis` en cas d'erreur.
-        this.state.update(s => ({...s}));
+        this.state.update(s => ({
+          ...s,
+          analysis: { data: null, loading: false, error: err.message }
+        }));
       },
     });
 

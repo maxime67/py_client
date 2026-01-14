@@ -22,6 +22,6 @@ export class MovieListComponent {
 
   // TODO 1: Convertir l'Observable de `movieApiService.getMovies()` en un Signal.
   // N'oubliez pas de fournir une `initialValue` pour que le signal soit synchrone dès le départ.
-  // movies = toSignal(/* ...votre code ici... */, { initialValue: [] });
+  movies = toSignal(this.movieApiService.getMovies(), { initialValue: [] });
 
 }

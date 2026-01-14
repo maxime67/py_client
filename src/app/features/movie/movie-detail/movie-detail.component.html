@@ -1,6 +1,7 @@
 <div class="detail-container">
   @if (isMovieLoading()) {
     <app-spinner />
+
   } @else if (movieError()) {
     <div class="error-message">{{ movieError() }}</div>
   } @else if (movie(); as m) {
