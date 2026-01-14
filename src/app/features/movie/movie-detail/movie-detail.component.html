@@ -1,0 +1,99 @@
+<div class="detail-container">
+  @if (isMovieLoading()) {
+    <app-spinner />
+  } @else if (movieError()) {
+    <div class="error-message">{{ movieError() }}</div>
+  } @else if (movie(); as m) {
+    <section class="movie-header">
+      <div class="title-section">
+        <h1 class="movie-title">{{ m.title }}</h1>
+        <div class="subtitle">
+          <span>{{ m.year }}</span>
+          <span>&bull;</span>
+          <span>{{ m.genre.label }}</span>
+          <span>&bull;</span>
+          <span>{{ m.duration | duration }}</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="content-grid">
+      <div class="main-content">
+        <section>
+          <h2>Synopsis</h2>
+          <p>{{ m.synopsis }}</p>
+        </section>
+        <section class="info-section">
+          <div>
+            <h3>Réalisateur</h3>
+            <p>{{ m.director.first_name }} {{ m.director.last_name }}</p>
+          </div>
+          <div>
+            <h3>Acteurs principaux</h3>
+            <p>{{ actors() }}</p>
+          </div>
+        </section>
+        <section>
+          <h2>Avis des membres ({{ m.opinions.length }})</h2>
+          <div class="opinions-list">
+            @for (opinion of m.opinions; track opinion.id) {
+              <div class="opinion-card">
+                <div class="opinion-header">
+                  <strong>{{ opinion.member.login }}</strong>
+                  <span class="opinion-note">{{ opinion.note }}/5 ★</span>
+                </div>
+                <p class="opinion-comment">"{{ opinion.comment }}"</p>
+              </div>
+            } @empty {
+              <p>Aucun avis pour le moment.</p>
+            }
+          </div>
+        </section>
+      </div>
+
+      <aside class="sidebar-content">
+        <section class="ai-analysis-card">
+          <h2>🤖 Analyse par l'IA</h2>
+
+          @if (state().analysis.loading) {
+            <div class="ai-loading">
+              <app-spinner />
+              <p>Analyse en cours...</p>
+            </div>
+          } @else if (state().analysis.error) {
+            <p class="error-ai">L'analyse IA a échoué.</p>
+          } @else if (analysis(); as an) {
+            @if(an.aiSummary) {
+              <div class="ai-section">
+                <h3>Résumé IA</h3>
+                <p>{{ an.aiSummary }}</p>
+              </div>
+            }
+            @if(an.aiOpinionSummary) {
+              <div class="ai-section">
+                <h3>Synthèse des avis</h3>
+                <p>{{ an.aiOpinionSummary }}</p>
+              </div>
+            }
+            @if(an.aiBestGenre) {
+              <div class="ai-section">
+                <h3>Genre suggéré</h3>
+                <p>{{ an.aiBestGenre }}</p>
+              </div>
+            }
+            @if(an.aiTags && an.aiTags.length > 0) {
+              <div class="ai-section">
+                <h3>Mots-clés</h3>
+                <div class="tags-container">
+                  @for(tag of an.aiTags; track tag) {
+                    <span class="tag">{{ tag }}</span>
+                  }
+                </div>
+              </div>
+            }
+          }
+        </section>
+      </aside>
+    </div>
+  }
+</div>

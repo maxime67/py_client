@@ -1,0 +1,88 @@
+<div class="form-container">
+  <div class="form-header">
+    <h1>Ajouter un nouveau film</h1>
+    <a routerLink="/movies" class="btn btn-secondary">Annuler</a>
+  </div>
+
+  <form [formGroup]="movieForm" (ngSubmit)="saveMovie()">
+    <div class="form-group">
+      <label for="title">Titre</label>
+      <input id="title" type="text" formControlName="title" class="form-control">
+      @if (movieForm.get('title')?.invalid && movieForm.get('title')?.touched) {
+        <small class="form-error">Le titre est requis (2 caractères min).</small>
+      }
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="year">Année</label>
+        <input id="year" type="number" formControlName="year" class="form-control">
+        @if (movieForm.get('year')?.invalid && movieForm.get('year')?.touched) {
+          <small class="form-error">L'année est requise.</small>
+        }
+      </div>
+      <div class="form-group">
+        <label for="duration">Durée (minutes)</label>
+        <input id="duration" type="number" formControlName="duration" class="form-control">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="synopsis">Synopsis</label>
+      <textarea id="synopsis" formControlName="synopsis" class="form-control" rows="5"></textarea>
+      @if (movieForm.get('synopsis')?.invalid && movieForm.get('synopsis')?.touched) {
+        <small class="form-error">Le synopsis est requis (10 caractères min).</small>
+      }
+    </div>
+
+    <!--
+    <div class="form-row">
+      <div class="form-group">
+        <label for="genre_id">Genre</label>
+        <select id="genre_id" formControlName="genre_id" class="form-control">
+          <option [value]="0" disabled>Sélectionner un genre</option>
+          @for (genre of genres(); track genre.id) {
+            <option [value]="genre.id">{{ genre.label }}</option>
+          }
+        </select>
+        @if (movieForm.get('genre_id')?.invalid && movieForm.get('genre_id')?.touched) {
+          <small class="form-error">Le genre est requis.</small>
+        }
+      </div>
+      <div class="form-group">
+        <label for="director_id">Réalisateur</label>
+        <select id="director_id" formControlName="director_id" class="form-control">
+          <option [value]="0" disabled>Sélectionner un réalisateur</option>
+          @for (p of participants(); track p.id) {
+            <option [value]="p.id">{{ p.first_name }} {{ p.last_name }}</option>
+          }
+        </select>
+        @if (movieForm.get('director_id')?.invalid && movieForm.get('director_id')?.touched) {
+          <small class="form-error">Le réalisateur est requis.</small>
+        }
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="actors_ids">Acteurs</label>
+      <select id="actors_ids" formControlName="actors_ids" class="form-control" multiple size="8">
+        @for (p of participants(); track p.id) {
+          <option [value]="p.id">{{ p.first_name }} {{ p.last_name }}</option>
+        }
+      </select>
+      @if (movieForm.get('actors_ids')?.invalid && movieForm.get('actors_ids')?.touched) {
+        <small class="form-error">Au moins un acteur est requis.</small>
+      }
+    </div>
+-->
+    <div class="form-actions">
+      @if (isSaving()) {
+        <app-spinner />
+      } @else {
+        <button type="submit" class="btn btn-primary" [disabled]="movieForm.invalid">
+          Enregistrer le film
+        </button>
+      }
+    </div>
+  </form>
+</div>

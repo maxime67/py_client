@@ -1,0 +1,27 @@
+<div class="list-container">
+  <div class="list-header">
+    <h1>Catalogue de films</h1>
+    <a routerLink="/movies/new" class="btn btn-primary">Ajouter un film</a>
+  </div>
+
+  <!-- @if (movies().length > 0) { -->
+    <div class="movie-grid">
+      <!-- @for (movie of movies(); track movie.id) { -->
+        <a class="movie-card"> <!-- [routerLink]="['/movies', movie.id]" -->
+          <div class="movie-card-content">
+            <h2 class="movie-title"><!-- TODO : afficher movie title et year --></h2>
+            <p class="movie-director">
+              De <!-- TODO : afficher movie.director first_name et last_name -->
+            </p>
+            <div class="movie-meta">
+              <span class="movie-genre"><!-- {{ movie.genre.label }} --></span>
+              <span class="movie-duration"><!-- {{ movie.duration }} --></span> <!-- TODO : utiliser le pipe duration -->
+            </div>
+          </div>
+        </a>
+<!--      }  -->
+    </div>
+<!--  } @else { -->
+    <app-spinner />
+<!--  } -->
+</div>
